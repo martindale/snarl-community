@@ -1,0 +1,29 @@
+{
+  "name": "snarl-community",
+  "version": "0.1.0",
+  "description": "snarl plugin to interact with a maki-powered community",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martindale/snarl-community.git"
+  },
+  "keywords": [
+    "snarl",
+    "plugin",
+    "maki",
+    "community"
+  ],
+  "author": "Eric Martindale",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/martindale/snarl-community/issues"
+  },
+  "homepage": "https://github.com/martindale/snarl-community",
+  "dependencies": {
+    "maki-remote": "git://github.com/martindale/maki-remote#events",
+    "restler": "^3.4.0"
+  }
+}
