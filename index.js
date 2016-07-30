@@ -3,12 +3,6 @@ var rest = require('restler');
 var Remote = require('maki-remote');
 var remote = new Remote('http://localhost:9200');
 
-var person = {
-  profile: {
-    email: 'eric.martindale+rpctest7@gmail.com'
-  }
-}
-
 module.exports = {
   '{USER:NEW}': function(msg, cb) {
     var slack = this;
