@@ -6,6 +6,7 @@ var remote = new Remote('http://localhost:9200');
 module.exports = {
   '{USER:NEW}': function(msg, cb) {
     var slack = this;
+
     console.log('new user received in plugin:', msg);
     var person = msg.user;
     
