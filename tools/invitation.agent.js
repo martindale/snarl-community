@@ -7,6 +7,14 @@ var channelNameMap = {};
 
 var SLACK_TOKEN = 'place admin token here';
 
+remote.on('close', function (e) {
+  console.error('closed:', e);
+});
+
+remote.on('error', function (e) {
+  console.trace('error:', e);
+});
+
 remote.on('message', function(msg) {
   console.log('message received:', msg);
   
@@ -34,6 +42,8 @@ remote.on('message', function(msg) {
             token: SLACK_TOKEN
           }
         }).on('complete', function(data) {
+          if (!data) return console.error('Error connecting to Slack.  Check network connection.');
+          if (data.error) return console.error('Error inviting user:', data.error);
           console.log('slack API request returned:', data);
         });
       }
@@ -56,8 +66,14 @@ rest.post('https://slack.com/api/channels.list', {
     token: SLACK_TOKEN
   }
 }).on('complete', function(data) {
+  if (!data) return console.error('Error connecting to Slack.  Check network connection.');
+  if (data.error) return console.error('Error listing channels:', data.error);
+  if (!data.channels) return console.error('Data contained no channels.');
+  
   data.channels.forEach(function(channel) {
     channelNameMap[channel.name] = channel;
   });  
-  remote.init();
+  remote.init({ reconnect: true }, function(err) {
+    console.log('Could not connect to host: must be online for first start!');
+  });
 });
