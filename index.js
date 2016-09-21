@@ -1,9 +1,21 @@
+var crypto = require('crypto');
 var rest = require('restler');
 
 var Remote = require('maki-remote');
 var remote = new Remote('http://localhost:9200');
 
 module.exports = {
+  'permalink': function(msg, cb) {
+    var slack = this;
+    var home = slack.config.home || 'https://maki.io/';
+
+    var key = [msg.channelID, msg.data.user, msg.data.ts].join(':');
+    var id = crypto.createHash('sha256').update(key).digest('hex');
+
+    var link = home + 'messages/' + id;
+
+    return cb(null, 'The permalink for your requested post is: ' + link);
+  },
   '{USER:NEW}': function(msg, cb) {
     var slack = this;
 
