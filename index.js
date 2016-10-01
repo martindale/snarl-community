@@ -11,10 +11,19 @@ module.exports = {
 
     var key = [msg.channelID, msg.data.user, msg.data.ts].join(':');
     var id = crypto.createHash('sha256').update(key).digest('hex');
-
     var link = home + 'messages/' + id;
+    
+    var message = {
+      id: id,
+      topic: msg.channelID,
+      author: msg.data.user,
+      content: msg.text,
+      created: msg.data.ts * 1000
+    }
 
-    return cb(null, 'The permalink for your requested post is: ' + link);
+    remote._post('/messages', message, function(err, obj) {
+      return cb(null, 'The permalink for your requested post is: ' + link);
+    });
   },
   '{USER:NEW}': function(msg, cb) {
     var slack = this;
