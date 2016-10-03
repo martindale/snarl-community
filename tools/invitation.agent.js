@@ -83,7 +83,7 @@ rest.post('https://slack.com/api/channels.list', {
        
       invitations.filter(function(x) {
         return x.status === 'created';
-      }).forEach(function(x) {
+      }).forEach(function(invitation) {
         rest.post('https://slack.com/api/users.admin.invite', {
           data: {
             email: invitation.email,
