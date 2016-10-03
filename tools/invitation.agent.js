@@ -103,7 +103,7 @@ rest.post('https://slack.com/api/channels.list', {
 
           console.log('slack API request returned:', data);
 
-          remote.patch('/invitations/' + invitation.id , {
+          remote.update('/invitations/' + invitation.id , {
             status: status
           }, function(err) {
             if (err) console.error(err);
