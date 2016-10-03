@@ -74,6 +74,36 @@ rest.post('https://slack.com/api/channels.list', {
     channelNameMap[channel.name] = channel;
   });  
   remote.init({ reconnect: true }, function(err) {
-    console.log('Could not connect to host: must be online for first start!');
+    if (err) console.error('Could not connect to host: must be online for first start!');
+  
+    remote._get('/invitations', {
+      status: 'created'
+    }, function(err, invitations) {
+      if (err) console.error(err);
+       
+      invitations.filter(function(x) {
+        return x.status === 'created';
+      }).forEach(function(x) {
+        rest.post('https://slack.com/api/users.admin.invite', {
+          data: {
+            email: invitation.email,
+            token: SLACK_TOKEN
+          }
+        }).on('complete', function(data) {
+          if (!data) return console.error('Error connecting to Slack.  Check network connection.');
+          if (data.error) return console.error('Error inviting user:', data.error);
+
+          console.log('slack API request returned:', data);
+
+          remote.patch('/invitations/' + invitation.id , {
+            status: 'sent'
+          }, function(err) {
+            if (err) console.error(err);
+            console.log('patched invitation:', invitation);
+          });
+        });
+      });
+      
+    });
   });
 });
