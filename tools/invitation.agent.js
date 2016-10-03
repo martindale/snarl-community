@@ -91,12 +91,20 @@ rest.post('https://slack.com/api/channels.list', {
           }
         }).on('complete', function(data) {
           if (!data) return console.error('Error connecting to Slack.  Check network connection.');
-          if (data.error) return console.error('Error inviting user:', data.error);
+          var status;
+          switch (data.error) {
+            case 'already_invited':
+              status = 'sent';
+              break;
+            case 'already_in_team':
+              status = 'accepted';
+              break;
+          }
 
           console.log('slack API request returned:', data);
 
           remote.patch('/invitations/' + invitation.id , {
-            status: 'sent'
+            status: status
           }, function(err) {
             if (err) console.error(err);
             console.log('patched invitation:', invitation);
