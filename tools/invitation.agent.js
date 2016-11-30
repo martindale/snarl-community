@@ -38,7 +38,7 @@ remote.on('message', function(msg) {
           data: {
             email: invitation.email,
             channels: channels.join(','),
-            extra_message: invitation.message,
+            //extra_message: invitation.message,
             token: SLACK_TOKEN
           }
         }).on('complete', function(data) {
@@ -72,7 +72,7 @@ rest.post('https://slack.com/api/channels.list', {
   
   data.channels.forEach(function(channel) {
     channelNameMap[channel.name] = channel;
-  });  
+  });
   remote.init({ reconnect: true }, function(err) {
     if (err) console.error('Could not connect to host: must be online for first start!');
   
